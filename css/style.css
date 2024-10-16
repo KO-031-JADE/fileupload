@@ -1,0 +1,23 @@
+#dropzone-preview {
+  display: flex;
+  align-items:center;
+  justify-content: space-between;
+}
+
+#dropzone-preview li {
+  width: 30%;
+}
+#dropzone-preview .border{
+  position: relative;
+}
+
+#dropzone-preview .border .d-flex {
+  flex-direction: column;
+  text-align: center;
+}
+
+#dropzone-preview .border .d-flex .shrink-0{
+  position: absolute;
+  top: 0;
+  right: 0;
+}
