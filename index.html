@@ -8,14 +8,16 @@
     <title>Image Upload</title>
 
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css' />
+    
 </head>
 
 <body class="m-4">
     <div class="dropzone"></div>
 
-    <!-- 포스팅 - 이미지/동영상 dropzone 영역 -->
+    <!-- 포스팅 - 이미지 dropzone 영역 -->
     <ul class="list-unstyled mb-0" id="dropzone-preview">
         <li class="mt-2" id="dropzone-preview-list">
             <!-- This is used as the file preview template -->
@@ -49,24 +51,32 @@
         dropzonePreviewNode.parentNode.removeChild(dropzonePreviewNode);
 
         const dropzone = new Dropzone(".dropzone", {
-            url: "https://httpbin.org/post", // 파일을 업로드할 서버 주소 url.
-            method: "post", // 기본 post로 request 감. put으로도 할 수 있음
-            previewTemplate: previewTemplate, // 커스텀 업로드 테마를 사용하고 싶다면
-            previewsContainer: '#dropzone-preview', // 드롭존 영역을 .dropzone이 아닌 다른 엘리먼트에서 설정
-            acceptedFiles: "image/jpeg,image/png,image/gif,image/jpg", // 특정 이미지 파일 형식만 허용
+            url: "https://httpbin.org/post",
+            method: "post",
+            previewTemplate: previewTemplate,
+            previewsContainer: '#dropzone-preview',
+            acceptedFiles: "image/jpeg,image/png,image/gif,image/jpg",
             init: function () {
                 this.on("addedfile", function (file) {
-                    // 파일 이름에서 확장자 추출
                     const fileName = file.name;
                     const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
                     console.log("File Extension: " + fileExtension);
 
-                    // 파일 확장자가 이미지 파일 형식이 아닌 경우 에러 메시지 출력
                     if (!['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
                         console.log("Error: Only image files are allowed.");
-                        this.removeFile(file); // 유효하지 않은 파일은 삭제
+                        this.removeFile(file);
                     }
                 });
+            }
+        });
+
+        // Sortable 적용
+        const sortable = new Sortable(document.getElementById('dropzone-preview'), {
+            animation: 150,
+            ghostClass: 'sortable-ghost',
+            handle: '.d-flex', // Drag area for the images
+            onEnd: function (/**Event*/evt) {
+                console.log("New order:", evt.newIndex);
             }
         });
     </script>
