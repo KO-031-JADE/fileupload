@@ -99,15 +99,14 @@
             if (dropzone.getQueuedFiles().length > 0) {
                 const formData = new FormData(document.getElementById("upload-form"));
 
-                // 이미지 파일 추가 및 순서 확인
+                // 이미지 파일 추가 및 제목 설정
                 const uploadedFiles = document.querySelectorAll('#dropzone-preview > .dz-image-preview');
-                const fileOrder = Array.from(uploadedFiles).map((item, index) => {
+                uploadedFiles.forEach((item, index) => {
                     const fileName = item.querySelector('[data-dz-name]').textContent.trim();
-                    formData.append(`image${index + 1}`, dropzone.getQueuedFiles().find(file => file.name === fileName), fileName);
-                    return fileName;
+                    const file = dropzone.getQueuedFiles().find(file => file.name === fileName);
+                    formData.append(`image${index + 1}`, file, fileName);
+                    formData.append(`image-title${index + 1}`, fileName);
                 });
-                console.log(fileOrder);
-                formData.append("fileOrder", JSON.stringify(fileOrder));
 
                 // 대표 이미지 설정 확인
                 const representativeImage = document.querySelector('.dz-image-preview.representative-selected');
@@ -118,6 +117,7 @@
                     alert("대표 이미지를 선택해주세요.");
                     return;
                 }
+
                 // API 요청 보내기
                 fetch("https://httpbin.org/post", {
                     method: "POST",
