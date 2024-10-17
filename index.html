@@ -24,7 +24,7 @@
 
     <ul class="list-unstyled mb-0" id="dropzone-preview">
         <li class="mt-2" id="dropzone-preview-list">
-            <div class="border rounded-3 position-relative">
+            <div class="rounded-3 position-relative image-box">
                 <div class="representative-label">대표</div>
                 <div class="d-flex align-items-center p-2">
                     <div class="flex-shrink-0 me-3">
@@ -97,16 +97,17 @@
 
         document.getElementById("submit-button").addEventListener("click", function () {
             if (dropzone.getQueuedFiles().length > 0) {
-                const formData = new FormData();
+                const formData = new FormData(document.getElementById("upload-form"));
 
-                // 폼 데이터 추가
-                formData.append("title", document.querySelector("input[name='title']").value);
-                formData.append("description", document.querySelector("textarea[name='description']").value);
-
-                // 이미지 파일 추가
-                dropzone.getQueuedFiles().forEach((file, index) => {
-                    formData.append(`file${index + 1}`, file, file.name);
+                // 이미지 파일 추가 및 순서 확인
+                const uploadedFiles = document.querySelectorAll('#dropzone-preview > .dz-image-preview');
+                const fileOrder = Array.from(uploadedFiles).map((item, index) => {
+                    const fileName = item.querySelector('[data-dz-name]').textContent.trim();
+                    formData.append(`image${index + 1}`, dropzone.getQueuedFiles().find(file => file.name === fileName), fileName);
+                    return fileName;
                 });
+                console.log(fileOrder);
+                formData.append("fileOrder", JSON.stringify(fileOrder));
 
                 // 대표 이미지 설정 확인
                 const representativeImage = document.querySelector('.dz-image-preview.representative-selected');
@@ -117,14 +118,6 @@
                     alert("대표 이미지를 선택해주세요.");
                     return;
                 }
-
-                // 현재 이미지 순서를 가져와 formData에 추가
-                const uploadedFiles = document.querySelectorAll('#dropzone-preview .dz-image-preview');
-                const fileOrder = Array.from(uploadedFiles).map((item) => {
-                    return item.querySelector('[data-dz-name]').textContent.trim();
-                });
-                formData.append("fileOrder", JSON.stringify(fileOrder));
-
                 // API 요청 보내기
                 fetch("https://httpbin.org/post", {
                     method: "POST",
@@ -148,10 +141,10 @@
         const sortable = new Sortable(document.getElementById('dropzone-preview'), {
             animation: 150,
             ghostClass: 'sortable-ghost',
-            handle: '.border',
+            handle: '.image-box',
             onEnd: function (/**Event*/evt) {
                 // 드래그가 끝난 후 변경된 순서 출력
-                const uploadedFiles = document.querySelectorAll('#dropzone-preview .dz-image-preview');
+                const uploadedFiles = document.querySelectorAll('#dropzone-preview > .dz-image-preview');
                 const fileOrder = Array.from(uploadedFiles).map((item) => {
                     return item.querySelector('[data-dz-name]').textContent.trim();
                 });

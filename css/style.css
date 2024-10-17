@@ -7,16 +7,17 @@
 #dropzone-preview li {
   width: 30%;
 }
-#dropzone-preview .border{
+#dropzone-preview .image-box{
   position: relative;
 }
 
-#dropzone-preview .border .d-flex {
+#dropzone-preview .image-box .d-flex {
   flex-direction: column;
   text-align: center;
+  cursor: pointer;
 }
 
-#dropzone-preview .border .d-flex .shrink-0{
+#dropzone-preview .image-box .d-flex .shrink-0{
   position: absolute;
   top: 0;
   right: 0;
