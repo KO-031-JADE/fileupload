@@ -74,6 +74,13 @@
                         console.log("이미지 파일 확인부탁드립니다.");
                         this.removeFile(file);
                     }
+
+                    // 파일 중복 검사
+                    const existingFiles = myDropzone.getAcceptedFiles();
+                    if (existingFiles.some(existingFile => existingFile.name === file.name && existingFile.size === file.size)) {
+                        alert("이미 동일한 이름의 파일이 존재합니다: " + file.name);
+                        this.removeFile(file);
+                    }
                 });
 
                 // 최대 파일 개수 초과 시
