@@ -21,3 +21,20 @@
   top: 0;
   right: 0;
 }
+
+.representative-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 128, 0, 0.8);
+  color: white;
+  padding: 5px;
+  font-weight: bold;
+  display: none;
+}
+.representative-selected .representative-label {
+  display: block;
+}
+.representative-selected {
+  border: 3px solid green;
+}
