@@ -52,16 +52,18 @@
             </li>`;
         var previewTemplate = dropzonePreviewNode.innerHTML;
 
+        // Dropzone 설정
         const dropzone = new Dropzone(".dropzone", {
-            url: "https://httpbin.org/post",
-            autoProcessQueue: false,
-            previewTemplate: previewTemplate,
-            previewsContainer: '#dropzone-preview',
-            acceptedFiles: "image/jpeg,image/png,image/gif,image/jpg",
-            maxFiles: 3,
+            url: "https://httpbin.org/post", // 업로드 요청 URL
+            autoProcessQueue: false, // 자동으로 업로드하지 않음
+            previewTemplate: previewTemplate, // 미리보기 템플릿 설정
+            previewsContainer: '#dropzone-preview', // 미리보기 컨테이너 설정
+            acceptedFiles: "image/jpeg,image/png,image/gif,image/jpg", // 허용되는 파일 형식
+            maxFiles: 3, // 최대 파일 개수
             init: function () {
                 var myDropzone = this;
 
+                // 파일이 추가될 때 발생하는 이벤트
                 this.on("addedfile", function (file) {
                     const fileName = file.name;
                     const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
@@ -75,6 +77,7 @@
                         this.removeFile(file);
                     }
 
+                    // 이미지 크기 검사
                     const img = new Image();
                     img.onload = function () {
                         if (img.width > 1200 || img.height > 1360) {
@@ -84,29 +87,31 @@
                     };
                     img.src = URL.createObjectURL(file);
 
+                    // 중복 파일 검사
                     const existingFiles = myDropzone.getAcceptedFiles();
                     if (existingFiles.some(existingFile => existingFile.name === fileName && existingFile.size === file.size)) {
                         alert("동일한 이름의 파일이 이미 존재합니다: " + fileName);
                         this.removeFile(file);
                     }
-                });
 
-                this.on("maxfilesexceeded", function (file) {
-                    alert("이미지는 최대 3개까지 업로드 가능합니다.");
-                    this.removeFile(file);
-                });
-
-                this.on("queuecomplete", function () {
-                    if (document.querySelectorAll('.dz-image-preview.representative-selected').length === 0) {
+                    // 처음 추가된 이미지가 대표 이미지로 설정되도록 함
+                    if (!document.querySelector('.dz-image-preview.representative-selected')) {
                         const firstImage = document.querySelector('.dz-image-preview');
                         if (firstImage) {
                             firstImage.classList.add('representative-selected');
                         }
                     }
                 });
+
+                // 최대 파일 개수를 초과했을 때 발생하는 이벤트
+                this.on("maxfilesexceeded", function (file) {
+                    alert("이미지는 최대 3개까지 업로드 가능합니다.");
+                    this.removeFile(file);
+                });
             }
         });
 
+        // 대표 이미지 클릭하여 설정하는 이벤트
         document.getElementById("dropzone-preview").addEventListener("click", function (event) {
             const target = event.target.closest('.dz-image-preview');
             if (target) {
@@ -115,6 +120,7 @@
             }
         });
 
+        // 제출 버튼 클릭 이벤트
         document.getElementById("submit-button").addEventListener("click", function () {
             if (dropzone.getQueuedFiles().length > 0) {
                 const formData = new FormData(document.getElementById("upload-form"));
@@ -126,6 +132,7 @@
                     formData.append(`image-title${index + 1}`, fileName);
                 });
 
+                // 대표 이미지 설정 확인
                 const representativeImage = document.querySelector('.dz-image-preview.representative-selected');
                 if (representativeImage) {
                     const repImageName = representativeImage.querySelector('[data-dz-name]').textContent.trim();
@@ -135,7 +142,7 @@
                     return;
                 }
 
-                // API 요청 보내기
+                // 서버로 폼 데이터 전송
                 fetch("https://httpbin.org/post", {
                     method: "POST",
                     body: formData,
@@ -154,13 +161,13 @@
             }
         });
 
-        // Sortable 적용
+        // 이미지 순서 변경을 위한 Sortable 설정
         const sortable = new Sortable(document.getElementById('dropzone-preview'), {
-            animation: 150,
-            ghostClass: 'sortable-ghost',
-            handle: '.image-box',
+            animation: 150, // 드래그 애니메이션 속도
+            ghostClass: 'sortable-ghost', // 드래그 중인 항목의 스타일 클래스
+            handle: '.image-box', // 드래그 가능한 영역
             onEnd: function (evt) {
-                // 드래그가 끝난 후 변경된 순서 출력
+                // 드래그 후 이미지 순서 출력
                 const uploadedFiles = document.querySelectorAll('#dropzone-preview > .dz-image-preview');
                 const fileOrder = Array.from(uploadedFiles).map((item) => {
                     return item.querySelector('[data-dz-name]').textContent.trim();
