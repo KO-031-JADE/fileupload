@@ -55,7 +55,7 @@
 
         const dropzone = new Dropzone(".dropzone", {
             url: "https://httpbin.org/post",
-            method: "post",
+            // method: "post",
             autoProcessQueue: false,
             previewTemplate: previewTemplate,
             previewsContainer: '#dropzone-preview',
@@ -81,36 +81,45 @@
                     alert("최대 3개 이미지 업로드가 가능합니다.");
                     this.removeFile(file);
                 });
+            }
+        });
 
-                // 전송 버튼 클릭 시 처리
-                document.getElementById("submit-button").addEventListener("click", function () {
-                    if (myDropzone.getQueuedFiles().length > 0) {
-                        myDropzone.processQueue();
-                    } else {
-                        alert("최소 1개의 이미지를 업로드해주세요.");
-                    }
-                }, { once: true }); // { once: true }로 한 번만 실행되도록 설정
+        document.getElementById("submit-button").addEventListener("click", function () {
+            if (dropzone.getQueuedFiles().length > 0) {
+                const formData = new FormData();
 
-                // 파일이 전송되기 전 추가 데이터를 폼에서 가져와 추가
-                this.on("sending", function (file, xhr, formData) {
-                    formData.append("title", document.querySelector("input[name='title']").value);
-                    formData.append("description", document.querySelector("textarea[name='description']").value);
+                // 폼 데이터 추가
+                formData.append("title", document.querySelector("input[name='title']").value);
+                formData.append("description", document.querySelector("textarea[name='description']").value);
 
-                    // 현재 이미지 순서를 가져와 formData에 추가
-                    const uploadedFiles = document.querySelectorAll('#dropzone-preview .dz-image-preview');
-                    const fileOrder = Array.from(uploadedFiles).map((item) => {
-                        return item.querySelector('[data-dz-name]').textContent.trim();
-                    });
-
-                    // 콘솔에 이미지 제목 순서대로 출력
-                    console.log("Image titles in order:", fileOrder);
+                // 이미지 파일 추가
+                dropzone.getQueuedFiles().forEach((file, index) => {
+                    formData.append(`file${index + 1}`, file, file.name);
                 });
 
-                // 파일이 성공적으로 업로드된 경우
-                this.on("successmultiple", function (files, response) {
-                    console.log("Files successfully uploaded!", response);
+                // 현재 이미지 순서를 가져와 formData에 추가
+                const uploadedFiles = document.querySelectorAll('#dropzone-preview .dz-image-preview');
+                const fileOrder = Array.from(uploadedFiles).map((item) => {
+                    return item.querySelector('[data-dz-name]').textContent.trim();
+                });
+                formData.append("fileOrder", JSON.stringify(fileOrder));
+
+                // API 요청 보내기
+                fetch("https://httpbin.org/post", {
+                    method: "POST",
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Files successfully uploaded!", data);
                     alert("파일이 성공적으로 업로드되었습니다!");
+                })
+                .catch(error => {
+                    console.error("Error uploading files:", error);
+                    alert("파일 업로드 중 오류가 발생했습니다.");
                 });
+            } else {
+                alert("최소 1개의 이미지를 업로드해주세요.");
             }
         });
 
