@@ -23,6 +23,10 @@
     </form>
 
     <ul class="list-unstyled mb-0" id="dropzone-preview"></ul>
+    <div class="mt-4">
+        <h5>리사이징된 대표 이미지 미리보기</h5>
+        <img id="resized-thumbnail-preview" src="#" alt="리사이징된 대표 이미지 미리보기" style="display: none; border: 1px solid #ccc; width: 300px; height: 341px;" />
+    </div>
 
     <script>
         Dropzone.autoDiscover = false;
@@ -96,10 +100,12 @@
 
                     // 처음 추가된 이미지가 대표 이미지로 설정되도록 함
                     if (!document.querySelector('.dz-image-preview.representative-selected')) {
-                        const firstImage = document.querySelector('.dz-image-preview');
-                        if (firstImage) {
-                            firstImage.classList.add('representative-selected');
-                        }
+                        setTimeout(() => {
+                            const firstImage = document.querySelector('.dz-image-preview');
+                            if (firstImage) {
+                                firstImage.classList.add('representative-selected');
+                            }
+                        }, 10);
                     }
                 });
 
@@ -120,6 +126,20 @@
             }
         });
 
+        // 대표 이미지 복사 및 리사이징 함수
+        function resizeRepresentativeImage(image, width, height) {
+            return new Promise((resolve) => {
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(image, 0, 0, width, height);
+                canvas.toBlob((blob) => {
+                    resolve({ blob, url: canvas.toDataURL('image/jpeg') });
+                }, 'image/jpeg');
+            });
+        }
+
         // 제출 버튼 클릭 이벤트
         document.getElementById("submit-button").addEventListener("click", function () {
             if (dropzone.getQueuedFiles().length > 0) {
@@ -132,30 +152,38 @@
                     formData.append(`image-title${index + 1}`, fileName);
                 });
 
-                // 대표 이미지 설정 확인
-                const representativeImage = document.querySelector('.dz-image-preview.representative-selected');
+                // 대표 이미지 설정 확인 및 리사이징
+                const representativeImage = document.querySelector('.dz-image-preview.representative-selected img');
                 if (representativeImage) {
-                    const repImageName = representativeImage.querySelector('[data-dz-name]').textContent.trim();
-                    formData.append("representativeImage", repImageName);
+                    const repImageElement = representativeImage;
+                    const repImageName = representativeImage.closest('.dz-image-preview').querySelector('[data-dz-name]').textContent.trim();
+                    resizeRepresentativeImage(repImageElement, 300, 341).then((resizedData) => {
+                        formData.append("thumbnail-img", resizedData.blob, `thumbnail_${repImageName}`);
+
+                        // 리사이징된 이미지 미리보기 업데이트
+                        const resizedThumbnailPreview = document.getElementById("resized-thumbnail-preview");
+                        resizedThumbnailPreview.src = resizedData.url;
+                        resizedThumbnailPreview.style.display = 'block';
+
+                        // 서버로 폼 데이터 전송
+                        fetch("https://httpbin.org/post", {
+                            method: "POST",
+                            body: formData,
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log("파일이 성공적으로 업로드되었습니다!", data);
+                            alert("파일이 성공적으로 업로드되었습니다!");
+                        })
+                        .catch(error => {
+                            console.error("파일 업로드 중 오류가 발생했습니다:", error);
+                            alert("파일 업로드 중 오류가 발생했습니다.");
+                        });
+                    });
                 } else {
                     alert("대표 이미지를 선택해 주세요.");
                     return;
                 }
-
-                // 서버로 폼 데이터 전송
-                fetch("https://httpbin.org/post", {
-                    method: "POST",
-                    body: formData,
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("파일이 성공적으로 업로드되었습니다!", data);
-                    alert("파일이 성공적으로 업로드되었습니다!");
-                })
-                .catch(error => {
-                    console.error("파일 업로드 중 오류가 발생했습니다:", error);
-                    alert("파일 업로드 중 오류가 발생했습니다.");
-                });
             } else {
                 alert("최소 1개의 이미지를 업로드해 주세요.");
             }
