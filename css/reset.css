@@ -88,4 +88,4 @@ textarea:not([rows]) {
   scroll-margin-block: 5ex;
 }
 
-p{margin:0;}
+p, ul{margin:0; padding:0;}

@@ -148,6 +148,29 @@ body{
   text-align: center;
 }
 
+.card-images-section .right {
+  width: 100%;
+  height: 352px;
+  max-width: 848px;
+  /* max-height: 352px; */
+  margin: 0 auto;
+  
+}
+
+.card-images-section .right .dropzone{
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.card-images-section .right .dropzone .dz-message{
+  position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
 .card-news-container .card-wrap-contents .right{
   width: 100%;
   max-width: 848px;
@@ -196,7 +219,6 @@ body{
 .card-images-grid {
   display: flex;
   gap: 20px;
-  margin-top: 15px;
 }
 
 .card-image {
