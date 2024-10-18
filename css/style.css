@@ -43,3 +43,228 @@ body{
 .representative-selected {
   border: 3px solid green;
 }
+
+.card-news-container {
+  max-width: 1196px;
+  margin: 50px auto;
+  border: 2px solid #dce1e7;
+  border-radius: 30px 30px 40px 40px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 4px solid #374ea2;
+  border-top: 0;
+}
+
+.card-news-container input::placeholder {color:#999;}
+.card-news-container input::-webkit-input-placeholder {color:#999;}
+.card-news-container input:-ms-input-placeholder {color:#999;} 
+
+.card-news-container textarea::placeholder {color:#999;}
+.card-news-container textarea::-webkit-input-placeholder {color:#999;}
+.card-news-container textarea:-ms-input-placeholder {color:#999;}
+
+.title-input,
+.content-input {
+  border: none;
+  border-radius: 8px;
+  font-size: 20px;
+  transition: border-color 0.3s;
+  background-color: #f9f9f9;
+  width: 100%;
+  max-width: 848px;
+  border-radius: 30px;
+  margin: 0 auto;
+}
+
+.title-input{
+  padding: 20px 30px;
+}
+
+.content-input {
+  padding: 20px 30px;
+  resize: none;
+}
+
+.title-input:focus,
+.content-input:focus {
+  border-color: #0056b3;
+}
+
+
+.card-news-container .card-title{
+  font-family: 'font-r', sans-serif;
+  text-align: center;
+  padding: 23px 0 23px 0;
+  background-color: #374ea2;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 23px 23px 0 0;
+  font-size: 38px;
+  margin:0;
+
+}
+
+.card-news-container .left{
+  display: block;
+  background-color: #f5f6fa;
+  width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-news-container .card-wrap-title{
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #e8e8e8;
+}
+.card-news-container .card-images-section{
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #e8e8e8;
+}
+.card-news-container .card-wrap-contents{
+  display: flex;
+  align-items: center;
+}
+
+.card-news-container .card-wrap-title .left{
+  height: 100px;
+  position: relative;
+}
+.card-news-container .card-images-section .left{
+  text-align: center;
+  height: 415px;   
+}
+.card-news-container .card-images-section .left > div{
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.card-news-container .card-wrap-contents .left{
+  height: 299px;
+  border-radius: 0 0 0 40px;
+  text-align: center;
+}
+
+.card-news-container .card-wrap-contents .right{
+  width: 100%;
+  max-width: 848px;
+  position: relative;
+  margin: 0 auto;
+}
+
+.card-news-container .card-wrap-contents .right .text-end{
+  position: absolute;
+  bottom: 30px;
+  right: 40px;
+}
+
+.card-news-container .card-wrap-contents .left .text-muted{
+  font-family: 'font-r', sans-serif;
+  color:#777777;
+  font-size: 20px;
+}
+
+.card-news-container .card-images-section .left p{
+  margin-top: 23px;
+  color:#374ea2;
+  font-family: 'font-b', sans-serif;
+}
+
+.card-label-font{
+  font-family: 'font-b', sans-serif;
+  font-size: 28px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.text-danger{
+  width: 8px;
+  height: 8px;
+  display: block;
+  background-color: #ffc20e;
+  border-radius: 100%;
+  margin-left: 10px;;
+  position: absolute;
+  top: 2px;
+  right: -18px;
+}
+
+.card-images-grid {
+  display: flex;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.card-image {
+  position: relative;
+  border: 2px solid #dce1e7;
+  border-radius: 15px;
+  overflow: hidden;
+  width: 180px;
+  height: 220px;
+  /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); */
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-image .representative-label {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #0056b3;
+  color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+}
+
+.card-image .delete-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-muted {
+  margin:0;
+}
+
+#submit-button {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.1rem;
+  background-color: #0056b3;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  transition: background-color 0.3s;
+}
+
+#submit-button:hover {
+  background-color: #004494;
+}
+
+#resized-thumbnail-preview {
+  margin-top: 20px;
+  border: 2px solid #dce1e7;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
