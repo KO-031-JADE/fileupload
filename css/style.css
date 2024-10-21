@@ -9,16 +9,19 @@ body{
 }
 
 #dropzone-preview li {
-  width: 30%;
+  width: 264px;
+  cursor: pointer;
 }
 #dropzone-preview .image-box{
   position: relative;
+  height: 338px;
 }
 
 #dropzone-preview .image-box .d-flex {
   flex-direction: column;
   text-align: center;
   cursor: pointer;
+  height: 100%;
 }
 
 #dropzone-preview .image-box .d-flex .shrink-0{
@@ -31,17 +34,31 @@ body{
   position: absolute;
   top: 0;
   left: 0;
-  background-color: rgba(0, 128, 0, 0.8);
+  background-color: #374ea2;
   color: white;
   padding: 5px;
-  font-weight: bold;
   display: none;
+  z-index: 1;
 }
 .representative-selected .representative-label {
   display: block;
 }
-.representative-selected {
-  border: 3px solid green;
+
+
+#dropzone-preview .image-box .d-flex .flex-shrink-0{
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  cursor: pointer;
+}
+
+#dropzone-preview .image-box .d-flex .flex-shrink-0 img{
+  width: 224px;
+  height: 255px;
+  margin: 20px auto;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 .card-news-container {
@@ -134,7 +151,7 @@ body{
 }
 .card-news-container .card-images-section .left{
   text-align: center;
-  height: 415px;   
+  height: 474px;   
 }
 .card-news-container .card-images-section .left > div{
   text-align: center;
@@ -150,7 +167,7 @@ body{
 
 .card-images-section .right {
   width: 100%;
-  height: 352px;
+  height: 420px;
   max-width: 848px;
   /* max-height: 352px; */
   margin: 0 auto;
@@ -160,7 +177,14 @@ body{
 .card-images-section .right .dropzone{
   width: 100%;
   height: 100%;
+  max-height: 383px;
   position: relative;
+  padding: 0;
+  border-radius: 17px;
+}
+
+.card-images-section .right .text-muted{
+  margin: 20px 0 0 20px;
 }
 
 .card-images-section .right .dropzone .dz-message{
@@ -226,8 +250,7 @@ body{
   border: 2px solid #dce1e7;
   border-radius: 15px;
   overflow: hidden;
-  width: 180px;
-  height: 220px;
+  height: 338px;
   /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); */
 }
 
@@ -239,27 +262,27 @@ body{
 
 .card-image .representative-label {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  background-color: #0056b3;
+  top: -2px;
+  left: 0px;
+  background-color: #374ea2;
   color: #ffffff;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 0.8rem;
+  padding: 11px 29px;
+  border-radius: 15px 0 15px 0;
+  font-size: 18px;
 }
 
 .card-image .delete-icon {
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: rgba(0, 0, 0, 0.6);
+  background: url('../images/X.png');
   color: #ffffff;
   border: none;
   font-size: 1.2rem;
   cursor: pointer;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -289,4 +312,8 @@ body{
   border: 2px solid #dce1e7;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.representative-selected {
+  border: 2px solid #374ea2;
 }
