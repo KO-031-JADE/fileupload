@@ -189,7 +189,7 @@ body{
 
 .card-images-section .right .dropzone .dz-message{
   position: absolute;
-    bottom: 0;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -316,4 +316,13 @@ body{
 
 .representative-selected {
   border: 2px solid #374ea2;
+}
+
+.text-end{
+  color:#000000;
+  font-weight: 500;
+  font-size: 16px;
+}
+.char-count{
+  color:#999999;
 }

@@ -6,26 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>카드뉴스 작성</title>
-
+    <script src="assets/js/jquery-3.6.0.min.js"></script>]
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
-    <!-- <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css' /> -->
     <link rel='stylesheet' href='./css/reset.css' type="text/css"/>
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
     <link rel='stylesheet' href='./css/font.css' type="text/css"/>
     <link rel='stylesheet' href='./css/style.css' type="text/css"/>
 </head>
-
-<style>
-    .text-end{
-        color:#000000;
-        font-weight: 500;
-        font-size: 16px;
-    }
-    .char-count{
-        color:#999999;
-    }
-</style>
 
 <body class="m-4">
     <div class="card-news-container">
@@ -105,31 +93,6 @@
             </li>`;
         var previewTemplate = dropzonePreviewNode.innerHTML;
 
-        // `
-        //     <li class="mt-2 dz-image-preview card-image">
-        //         <div class="rounded-3 position-relative image-box">
-        //             <div class="representative-label">대표</div>
-        //             <div class="d-flex align-items-center p-2">
-        //                 <div class="flex-shrink-0 me-3">
-        //                     <div class="width-8 h-auto rounded-3">
-        //                         <img data-dz-thumbnail class="w-full h-auto rounded-3 block" src="#" alt="Dropzone-Image" style="width: 120px;" />
-        //                     </div>
-        //                 </div>
-        //                 <div class="flex-grow-1">
-        //                     <div class="pt-1">
-        //                         <h6 class="font-semibold mb-1" data-dz-name>&nbsp;</h6>
-        //                         <p class="text-sm text-muted fw-normal" data-dz-size></p>
-        //                         <strong class="error text-danger" data-dz-errormessage></strong>
-        //                     </div>
-        //                 </div>
-        //                 <div class="shrink-0">
-        //                     <button data-dz-remove class="delete-icon">X</button>
-        //                 </div>
-        //             </div>
-        //         </div>
-        //     </li>`;
-        // `
-
         const dropzone = new Dropzone(".dropzone", {
             dictDefaultMessage: "여기에 파일을 드롭하여 업로드하세요",
             url: "https://httpbin.org/post", // 업로드 요청 URL
@@ -182,15 +145,25 @@
                             }
                         }, 10);
                     }
+
+
+                    // 파일이 추가되면 메시지 숨기기
+                    document.querySelector(".dz-message").style.display = "none";
                 });
 
-                // 최대 파일 개수를 초과했을 때 발생하는 이벤트
+                this.on("removedfile", function (file) {
+                    // 파일이 모두 제거되면 다시 메시지 보이기
+                    if (myDropzone.files.length === 0) {
+                        document.querySelector(".dz-message").style.display = "block";
+                    }
+                });
+
                 this.on("maxfilesexceeded", function (file) {
                     alert("이미지는 최대 3개까지 업로드 가능합니다.");
                     this.removeFile(file);
                 });
-            }
-        });
+                    }
+                });
 
         // 대표 이미지 클릭하여 설정하는 이벤트
         document.getElementById("dropzone-preview").addEventListener("click", function (event) {
